@@ -1,0 +1,12 @@
+# Secrets — never commit keys or packed-extension private keys
+.env
+.env.*
+*.pem
+*.key
+secrets*
+# Local output / OS junk
+QuizHelper/
+*.crx
+*.zip
+.DS_Store
+node_modules/

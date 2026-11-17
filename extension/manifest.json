@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Quiz Helper (OpenRouter)",
+  "version": "2.0.0",
+  "description": "Press a button: it screenshots the current practice-quiz question, asks an OpenRouter model that already has your course files, and marks the answer.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "tabs",
+    "downloads"
+  ],
+  "host_permissions": [
+    "https://openrouter.ai/*",
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Quiz Helper"
+  },
+  "options_page": "options.html",
+  "commands": {
+    "solve-current": {
+      "suggested_key": {
+        "default": "Alt+Q"
+      },
+      "description": "Solve the current question"
+    }
+  }
+}

@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Quiz Helper — setup</title>
+<style>
+  :root { --bg:#fafaf9; --card:#fff; --fg:#1c1917; --muted:#57534e; --line:#e7e5e4; --go:#15803d; --go-fg:#fff; --danger:#b91c1c; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0c0a09; --card:#1c1917; --fg:#f5f5f4; --muted:#a8a29e; --line:#292524; --go:#16a34a; --go-fg:#fff; --danger:#f87171; }
+  }
+  * { box-sizing:border-box; }
+  body { font:14px/1.55 system-ui,sans-serif; margin:0; padding:28px 18px; background:var(--bg); color:var(--fg); }
+  .wrap { max-width:640px; margin:0 auto; }
+  h1 { font-size:20px; margin:0 0 4px; }
+  p.sub { color:var(--muted); margin:0 0 22px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin-bottom:16px; }
+  h2 { font-size:15px; margin:0 0 12px; }
+  label { display:block; font-size:12px; color:var(--muted); margin:10px 0 4px; }
+  input[type=text], input[type=password], select { width:100%; padding:8px 10px; font:inherit; color:var(--fg); background:var(--bg); border:1px solid var(--line); border-radius:7px; }
+  .inline { display:flex; gap:8px; align-items:flex-end; }
+  .inline > * { flex:1; }
+  button { padding:8px 14px; font:inherit; border-radius:7px; border:1px solid var(--line); background:transparent; color:var(--fg); cursor:pointer; white-space:nowrap; }
+  button.go { background:var(--go); color:var(--go-fg); border-color:var(--go); font-weight:600; }
+  button.link { border:none; color:var(--danger); padding:4px 6px; }
+  button:focus-visible, input:focus-visible, select:focus-visible { outline:2px solid var(--go); outline-offset:2px; }
+  .course { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-top:1px solid var(--line); }
+  .course:first-child { border-top:none; }
+  .course .meta { color:var(--muted); font-size:12px; }
+  .saved { color:var(--go); font-size:12px; margin-left:8px; }
+  .note { color:var(--muted); font-size:12px; margin-top:8px; }
+  #msg, #addMsg, #pdfStatus { min-height:1.2em; font-size:12px; color:var(--muted); margin-top:8px; white-space:pre-wrap; word-break:break-word; }
+  .err { color:var(--danger); }
+  .danger { color:var(--danger); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Quiz Helper setup</h1>
+  <p class="sub">Everything stays on this computer. Your API key and files never leave your browser except in the requests you send to OpenRouter.</p>
+
+  <section>
+    <h2>OpenRouter</h2>
+    <label>API key</label>
+    <div class="inline">
+      <input type="password" id="apiKey" placeholder="sk-or-...">
+      <button id="saveKey" class="go" style="flex:0 0 auto">Save</button>
+    </div>
+    <label>Model <span class="note">(needs image input if you send screenshots)</span></label>
+    <div class="inline">
+      <input type="text" id="model" list="models" placeholder="e.g. openai/gpt-... or google/gemini-...">
+      <button id="loadModels" style="flex:0 0 auto">Load list</button>
+    </div>
+    <datalist id="models"></datalist>
+    <label>PDF parsing engine</label>
+    <select id="pdfEngine">
+      <option value="cloudflare-ai">Cloudflare AI — free, good for normal (text) PDFs</option>
+      <option value="mistral-ocr">Mistral OCR — paid, for scanned / image-heavy PDFs</option>
+    </select>
+    <div id="msg"></div>
+  </section>
+
+  <section>
+    <h2>Courses &amp; files</h2>
+    <label>Course name</label>
+    <input type="text" id="courseName" placeholder="e.g. Supply Chain Analytics">
+    <label>Add files <span class="note">(pdf, pptx, docx, txt, md, images — pick several at once)</span></label>
+    <div class="inline">
+      <input type="file" id="files" multiple accept=".pdf,.pptx,.docx,.txt,.md,.png,.jpg,.jpeg,.webp,.gif">
+      <button id="add" class="go" style="flex:0 0 auto">Add to course</button>
+    </div>
+    <div id="pdfStatus" class="note"></div>
+    <div id="addMsg" class="note"></div>
+    <div id="courses" style="margin-top:14px"></div>
+    <p class="note">PDFs are parsed by OpenRouter the first time you use a course, then cached as text so later
+      questions are fast and cheap. Changing a course's files clears that cache.</p>
+  </section>
+</div>
+<script src="vendor/fflate.min.js"></script>
+<script src="vendor/pdf.min.js"></script>
+<script src="db.js"></script>
+<script src="extract.js"></script>
+<script src="options.js"></script>
+</body>
+</html>
